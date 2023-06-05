@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsh.mapper.DormitoryMapper">
+
+
+
+    <select id="availableList" resultType="com.xsh.entity.Dormitory">
+        select id,name from dormitory where available > 0
+    </select>
+
+
+    <update id="subAvailable">
+        update dormitory set available = available-1 where id = #{id}
+    </update>
+
+    <insert id="addAvailable">
+        update dormitory set available = available+1 where id = #{id}
+    </insert>
+
+
+    <select id="findDormitoryIdByBuildingId" resultType="java.lang.Integer">
+        select id from dormitory where building_id = #{buildingId}
+    </select>
+
+    <select id="findAvailableDormitoryId" resultType="java.lang.Integer">
+        select id from dormitory where available > 0 limit 0,1
+    </select>
+
+    <delete id="delete">
+        delete from dormitory where id = #{id}
+    </delete>
+
+    <select id="list" resultType="Dormitory">
+        select d.id,b.name buildingName,d.name name,d.type,d.available,d.telephone from dormitory d,building b where d.building_id = b.id
+    </select>
+
+    <select id="searchByName" resultType="Dormitory">
+        select d.id,b.name buildingName,d.name name,d.type,d.available,d.telephone from dormitory d,building b where d.building_id = b.id and d.name like concat('%',#{value},'%')
+    </select>
+
+    <select id="searchByTelephone" resultType="Dormitory">
+        select d.id,b.name buildingName,d.name name,d.type,d.available,d.telephone from dormitory d,building b where d.building_id = b.id and d.telephone like concat('%',#{value},'%')
+    </select>
+
+    <insert id="save">
+        insert into dormitory(building_id,name,type,available,telephone) values(#{buildingId},#{name},#{type},#{type},#{telephone})
+    </insert>
+
+    <update id="update">
+        update dormitory set name = #{name},telephone = #{telephone} where id = #{id}
+    </update>
+
+    <select id="findByBuildingId" resultType="Dormitory">
+        select id,name from dormitory where building_id = #{buildingId}
+    </select>
+</mapper>
